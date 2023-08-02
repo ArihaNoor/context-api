@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import Login from "./pages/Login";
+import Main from "./pages/Main";
+import Register from "./pages/Register";
+import FirstScreen from "./pages/FirstScreen";
+import { AuthProvider } from "./context/AuthProvider";
+import { TodoProvider } from "./context/TodoProvider";
 
 function App() {
+  const token = localStorage.getItem("token");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <AuthProvider>
+      <TodoProvider>
+          <Routes>
+            <Route path="/">
+              <Route index element={<FirstScreen />} />
+              {token ? (
+                <>
+                  <Route path="/Main" element={<Main />} />
+                  <Route path="/" element={<Navigate to="/Main" />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/" element={<Navigate to="/login" />} />
+                </>
+              )}
+            </Route>
+          </Routes>
+      </TodoProvider>
+    </AuthProvider>
+    </BrowserRouter>
   );
 }
 
