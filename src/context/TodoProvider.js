@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import { BASE_URL } from '../BaseURL/BaseURL';
-import { showErrorToastMessage, showSuccessToastMessage } from '../Components/Message';
 import { HideModal } from "../Components/Shared";
+import Swal from "sweetalert";
 
 export const TodoContext = createContext();
 
@@ -30,7 +30,11 @@ const TodoProvider = ({ children }) => {
         } 
       })
       .catch((error) => {
-        showErrorToastMessage("Error : " + error.message)
+        Swal({
+          title: "Error",
+          text: "Error : " + error.message,
+          icon: "error",
+        });
       });
   };
   const HandleAddTask = (title, description) => {
@@ -53,18 +57,32 @@ const TodoProvider = ({ children }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.success === true) {
-          showSuccessToastMessage("Task added successfully");
-          HideModal();
-          fetchTasks(); 
+          Swal({
+            title: "Success",
+            text: "Task added successfully",
+            icon: "success",
+          }).then(() => {
+            HideModal();
+            fetchTasks();
+          });
         } else {
-          showErrorToastMessage("Failed to add task");
+          Swal({
+            title: "Error",
+            text: "Failed to add task",
+            icon: "error",
+          });
         }
       })
       .catch((error) => {
-        showErrorToastMessage("Error : " + error.message)
+        Swal({
+          title: "Error",
+          text: "Error : " + error.message,
+          icon: "error",
+        });
       });
-  };
-  const HandleDeleteTask = (id) => {
+};
+
+const HandleDeleteTask = (id) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `JWT ${token}`);
     var requestOptions = {
@@ -77,17 +95,31 @@ const TodoProvider = ({ children }) => {
       .then((response) => response.json())
       .then((result) => {
         if (result.success === true) {
-          fetchTasks();
-          showSuccessToastMessage("Task Removed Successfully");
+          Swal({
+            title: "Success",
+            text: "Task removed successfully",
+            icon: "success",
+          }).then(() => {
+            fetchTasks();
+          });
         } else {
-          showErrorToastMessage("Failed to remove task");
+          Swal({
+            title: "Error",
+            text: "Failed to remove task",
+            icon: "error",
+          });
         }
       })
       .catch((error) => {
-        showErrorToastMessage("Error : " + error.message)
+        Swal({
+          title: "Error",
+          text: "Error : " + error.message,
+          icon: "error",
+        });
       });
-  };
-  const HandleEditTask = (id) => {
+};
+
+const HandleEditTask = (id) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `JWT ${token}`);
     var raw = "";
@@ -102,12 +134,16 @@ const TodoProvider = ({ children }) => {
     fetch(`${BASE_URL}/updatetask/${id}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        fetchTasks(); 
+        fetchTasks();
       })
       .catch((error) => {
-        showErrorToastMessage("Error : " + error.message)
+        Swal({
+          title: "Error",
+          text: "Error : " + error.message,
+          icon: "error",
+        });
       });
-  };
+};
   return (
     <TodoContext.Provider value={{ fetchTasks, HandleAddTask, task, HandleDeleteTask, HandleEditTask, isLoading, setIsLoading }}>
       {children}

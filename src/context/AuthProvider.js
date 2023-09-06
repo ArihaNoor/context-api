@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { showErrorToastMessage, showSuccessToastMessage } from '../Components/Message';
 import { useState } from 'react';
+import Swal from "sweetalert";
 import { BASE_URL } from '../BaseURL/BaseURL';
 
 export const AuthContext = createContext();
@@ -19,47 +19,62 @@ const AuthProvider = ({ children }) => {
             email: uemail,
             password: upass,
         });
-
+    
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: raw,
             redirect: "follow",
         };
-
+    
         fetch(`${BASE_URL}/register`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 if (result.success === true) {
-                    showSuccessToastMessage("Successfully registered");
-                    setIsLoading(false);
-                    navigate("/login");
+                    Swal({
+                        title: "Success",
+                        text: "Successfully registered",
+                        icon: "success",
+                    }).then(() => {
+                        setIsLoading(false);
+                        navigate("/login");
+                    });
                 } else {
-                    showErrorToastMessage("Login failed");
+                    Swal({
+                        title: "Error",
+                        text: "Registration failed",
+                        icon: "error",
+                    });
+                    setIsLoading(false);
                 }
             })
             .catch((error) => {
-                showErrorToastMessage(error.message);
+                Swal({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                });
+                setIsLoading(false);
             });
-    }
-    //Login 
+    };
+    
     const handleLogin = (userEmail, password) => {
         setIsLoading(true);
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-
+    
         var raw = JSON.stringify({
             email: userEmail,
             password: password,
         });
-
+    
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: raw,
             redirect: "follow",
         };
-
+    
         fetch(`${BASE_URL}/login`, requestOptions)
             .then((response) => response.json())
             .then((userObj) => {
@@ -67,15 +82,32 @@ const AuthProvider = ({ children }) => {
                     localStorage.setItem("user", JSON.stringify(userObj.user));
                     localStorage.setItem("token", userObj.token);
                     setIsLoading(false);
-                    navigate("/main"); 
+                    navigate("/main");
+    
+                    Swal({
+                        title: "Success",
+                        text: "Login successful",
+                        icon: "success",
+                    });
                 } else {
-                    showErrorToastMessage("Invalid credentials");
+                    Swal({
+                        title: "Error",
+                        text: "Invalid credentials",
+                        icon: "error",
+                    });
+                    setIsLoading(false);
                 }
             })
             .catch((error) => {
-                showErrorToastMessage(error.message);
+                Swal({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                });
+                setIsLoading(false);
             });
-    }
+    };
+    
     return (
         <AuthContext.Provider value={{ handleRegister, handleLogin, isLoading, setIsLoading }}>
             {children}

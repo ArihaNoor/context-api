@@ -13,7 +13,7 @@ const FirstScreen = () => {
     <FirstLayout>
       <div id="first-screen">
         <div className="content">
-          <h1>Todo Task List Web App</h1>
+          <h1>To-Do List Web App</h1>
           <p>
             Become focused, organized, and calm with Todoist. The fastest way to
             get tasks out of your head.Reach that mental clarity you’ve been
@@ -39,28 +39,33 @@ const FirstLayout = styled.section`
   justify-content: center;
   text-align: center;
   align-items: center;
-  margin-top: 10%;
+  margin-top: 7%;
+  gap: 3rem;
 }
 .content {
   width: 30%;
   text-align: center;
 }
 .content p {
-  line-height: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 200;
+  line-height: 2rem;
 }
 .content h1 {
-  font-weight: bolder;
+  font-weight: 900;
+  font-size: 2rem;
 }
 #image {
-  width: 30%;
+  width: 25%;
   background-color: #9cb5c590;
   border-radius: 50%;
   margin-left: 0.5rem;
+  padding: 1rem;
   box-shadow: 5px 5px 5px 5px #14354b8b;
 }
 #image img {
-  height: min-content;
-  width: min-content;
+  height: 100%;
+  width: 100%;
   border-bottom-right-radius: 40%;
 }
 

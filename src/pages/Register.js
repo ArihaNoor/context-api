@@ -84,17 +84,18 @@ const RegisterPage = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
+margin-top: 2rem;
   #register-page{
     background-color: white;
-    width: 50%;
-    box-shadow: 5px 5px 5px 10px #93c0e8;
+    width: 35%;
+    box-shadow: 2px 2px 3px 3px #93c0e8;
     border-radius: 2rem;
     color: #1a3242;
     display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 100vh;
+  min-height: 90vh;
  }
  .register-icon{
     font-size: 3rem;

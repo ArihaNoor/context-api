@@ -3,8 +3,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BASE_URL } from "../BaseURL/BaseURL";
-import {showErrorToastMessage,showSuccessToastMessage} from './Message';
+import { showErrorToastMessage, showSuccessToastMessage } from './Message';
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert";
 
 //Header Function
 const Header = () => {
@@ -33,13 +34,30 @@ const Header = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.success === true) {
-          showSuccessToastMessage('Logged out successfully.');
-          navigate("/");
-        }else{
-          showErrorToastMessage('User not logged out');
+          // Show success message using SweetAlert
+          Swal({
+            title: "Logged out successfully",
+            icon: "success",
+          }).then(() => {
+            navigate("/");
+          });
+        } else {
+          // Show error message using SweetAlert
+          Swal({
+            title: "Error",
+            text: "User not logged out",
+            icon: "error",
+          });
         }
       })
-      .catch((error) => showErrorToastMessage("Error : " + error.message));
+      .catch((error) => {
+        // Show error message using SweetAlert
+        Swal({
+          title: "Error",
+          text: "Error: " + error.message,
+          icon: "error",
+        });
+      });
   };
   return (
     <HeaderComponent>
@@ -49,7 +67,7 @@ const Header = () => {
         </div>
         <div className="logout">
           <h3>Logged In as: {user?.name}</h3>
-          <button className="logout-btn" onClick={()=>handleLogout()}>
+          <button className="logout-btn" onClick={() => handleLogout()}>
             <Link className="logout-link">LOGOUT</Link>
           </button>
         </div>

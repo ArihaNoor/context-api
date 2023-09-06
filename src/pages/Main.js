@@ -206,7 +206,8 @@ textarea {
   border: none;
   border-radius: 50%;
   margin-left: 70%;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
 }
 
 .buttons {
